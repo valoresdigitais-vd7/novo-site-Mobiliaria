@@ -17,98 +17,120 @@ export const LANDING_NAV_LINKS: NavLink[] = [
 export const PRODUCTS: Product[] = [
   {
     id: 1,
-    name: 'Plano Básico',
-    price: 'R$ 29/mês',
-    features: ['Recurso Essencial 1', 'Recurso Essencial 2', 'Suporte por Email'],
-  },
-  {
-    id: 2,
-    name: 'Plano Pro',
-    price: 'R$ 79/mês',
-    features: ['Todos os recursos do Básico', 'Recurso Avançado 1', 'Recurso Avançado 2', 'Suporte Prioritário'],
+    name: 'Plano Mococa',
+    price: 'Imóveis a partir de R$ 350.000',
+    features: [
+      'Foco: Compra da primeira moradia',
+      'Pré‑qualificação bancária CEF/Bradesco',
+      'Simulação de financiamento personalizada',
+      'Tour guiado e acompanhamento até a entrega das chaves'
+    ],
     isFeatured: true,
   },
   {
+    id: 2,
+    name: 'Plano Ribeirão Preto',
+    price: 'Economia de até 40%',
+    features: [
+      'Foco: Arbitragem de custo e qualidade de vida',
+      'Calculadora de economia “Mude para Mococa”',
+      'Consultoria de viabilidade e ROI imobiliário',
+      'Atendimento híbrido (online + presencial)'
+    ],
+  },
+  {
     id: 3,
-    name: 'Plano Empresa',
-    price: 'R$ 299/mês',
-    features: ['Todos os recursos do Pro', 'Dashboard de Equipe', 'Integrações Premium', 'Gerente de Conta Dedicado'],
+    name: 'Plano Caconde',
+    price: 'Rentabilidade de 8–12% ao ano',
+    features: [
+      'Foco: Investidor agro e renda passiva',
+      'Imóveis rurais e de campo com valorização patrimonial',
+      'Gestão de carteira e análise de ROI',
+      'Agendamento de tour de investimento'
+    ],
+  },
+  {
+    id: 4,
+    name: 'Plano Capitólio',
+    price: 'Imóveis de lazer entre R$ 1 mi – R$ 2,5 mi',
+    features: [
+      'Foco: Lazer e investimento premium',
+      'Casas e terrenos no Mar de Minas',
+      'Suporte completo para compra e legalização',
+      'Serviço de concierge e locação de temporada'
+    ],
   },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
   {
-    quote: 'Este produto transformou completamente nosso fluxo de trabalho. Não consigo imaginar trabalhar sem ele.',
-    author: 'Ana Silva',
-    role: 'CEO, Tech Solutions',
-    avatarUrl: 'https://picsum.photos/id/1011/100/100',
+    quote: 'Com a Favam Imóveis, consegui sair do aluguel em 20 dias. O processo de pré‑qualificação foi rápido e transparente.',
+    author: 'Carla Menezes',
+    role: 'Compradora – Mococa/SP',
+    avatarUrl: 'https://picsum.photos/id/1005/100/100',
   },
   {
-    quote: 'O suporte ao cliente é excepcional e a plataforma é incrivelmente fácil de usar. Recomendo fortemente!',
-    author: 'Carlos Pereira',
-    role: 'Diretor de Marketing, Creative Co.',
-    avatarUrl: 'https://picsum.photos/id/1012/100/100',
+    quote: 'Vendemos nossa casa em Ribeirão e investimos em Mococa com rentabilidade acima do esperado. Atendimento consultivo e muito humano.',
+    author: 'Ricardo e Daniela Tavares',
+    role: 'Investidores – Ribeirão Preto/SP',
+    avatarUrl: 'https://picsum.photos/id/1006/100/100',
   },
   {
-    quote: 'Um divisor de águas para nossa produtividade. O ROI foi quase imediato.',
-    author: 'Juliana Costa',
-    role: 'Gerente de Operações, Innovate Ltda.',
-    avatarUrl: 'https://picsum.photos/id/1013/100/100',
+    quote: 'Investi em um terreno em Caconde e já valorizou mais de 25% em um ano. A consultoria da Favam foi decisiva.',
+    author: 'Paulo G. Andrade',
+    role: 'Produtor Rural – Caconde/SP',
+    avatarUrl: 'https://picsum.photos/id/1007/100/100',
   },
   {
-    quote: 'Design elegante, funcionalidade poderosa. A equipe por trás disso realmente entende as necessidades do cliente.',
-    author: 'Ricardo Mendes',
-    role: 'Desenvolvedor Frontend, Web Crafters',
-    avatarUrl: 'https://picsum.photos/id/1014/100/100',
+    quote: 'Nosso refúgio em Capitólio é um sonho realizado. Tudo correu perfeitamente, do tour até o financiamento.',
+    author: 'Marina Campos',
+    role: 'Empresária – Belo Horizonte/MG',
+    avatarUrl: 'https://picsum.photos/id/1008/100/100',
   },
 ];
 
 export const FAQ_DATA = [
-    {
-        question: 'O teste grátis realmente é grátis?',
-        answer: 'Sim, o nosso teste de 7 dias é 100% gratuito e não exige cartão de crédito. Você terá acesso a todos os recursos do plano Pro para experimentar a plataforma sem compromissos.'
-    },
-    {
-        question: 'Posso cancelar a qualquer momento?',
-        answer: 'Com certeza. Você pode cancelar sua assinatura a qualquer momento, diretamente no seu painel de controle, com apenas alguns cliques. Sem burocracia ou taxas de cancelamento.'
-    },
-    {
-        question: 'Funciona offline?',
-        answer: 'Nossa plataforma é baseada na nuvem e requer uma conexão com a internet para a maioria das funcionalidades. No entanto, estamos desenvolvendo recursos que permitirão o acesso a certas informações offline.'
-    },
-    {
-        question: 'Tem integração com outras ferramentas?',
-        answer: 'Sim! Oferecemos integrações nativas com diversas ferramentas populares do mercado, como Slack, Google Drive, Trello e muitas outras. Além disso, nossa API está disponível para integrações personalizadas.'
-    },
-    {
-        question: 'Meus dados ficam seguros?',
-        answer: 'A segurança dos seus dados é nossa maior prioridade. Utilizamos criptografia de ponta (AES-256), servidores seguros e seguimos as melhores práticas de segurança do mercado para garantir que suas informações estejam sempre protegidas.'
-    }
+  {
+    question: 'Como funciona a pré‑qualificação bancária?',
+    answer: 'Após preencher o formulário, nossa equipe envia sua documentação para análise nas instituições parceiras (CEF, Bradesco). O resultado sai em até 48h com simulação personalizada.'
+  },
+  {
+    question: 'Posso financiar imóveis fora da minha cidade?',
+    answer: 'Sim. Trabalhamos com clientes de todo o Brasil interessados em imóveis em Mococa, Ribeirão Preto, Caconde e Capitólio.'
+  },
+  {
+    question: 'A Favam cobra taxas adicionais no processo?',
+    answer: 'Não. Nossos honorários já estão incluídos na comissão padrão de corretagem e são pagos apenas após a conclusão do negócio.'
+  },
+  {
+    question: 'Posso agendar um tour presencial?',
+    answer: 'Claro! Disponibilizamos tours guiados por especialistas, com transporte e acompanhamento técnico. Basta agendar pelo WhatsApp Business.'
+  },
+  {
+    question: 'Vocês oferecem suporte pós‑venda?',
+    answer: 'Sim. O acompanhamento continua após a compra, com apoio em documentação, vistoria e até gestão de locação se desejado.'
+  },
 ];
 
 export const FOOTER_LINKS = {
-    company: {
-        name: 'Produto x',
-        description: 'Transformando produtividade em resultados desde 2020.',
-        cnpj: 'CNPJ: 12.345.678/0001-90',
-        address: 'Endereço: Rua das Flores, 123 - São Paulo/SP',
-    },
-    support: [
-        { name: 'suporte@taskflowpro.com', href: 'mailto:suporte@taskflowpro.com' },
-        { name: '(11) 3333-4444', href: 'tel:+551133334444' },
-        { name: 'Central de Ajuda', href: '#' },
-        { name: 'Status do Sistema', href: '#' },
-    ],
-    legal: [
-        { name: 'Termos de Uso', href: '/termos-de-servico' },
-        { name: 'Política de Privacidade', href: '/politica-de-privacidade' },
-        { name: 'Política de Cookies', href: '/politica-de-cookies' },
-        { name: 'Política de Reembolso', href: '/devolucoes-e-trocas' },
-    ],
-    enterprise: [
-        { name: 'Sobre Nós', href: '#' },
-        { name: 'Carreiras', href: '#' },
-        { name: 'Imprensa', href: '#' },
-        { name: 'Contato', href: '/contato' },
-    ],
+  company: {
+    name: 'Favam Imóveis',
+    description: 'Imobiliária especializada em oportunidades regionais de alto desempenho. Presença em Mococa, Ribeirão Preto, Caconde e Capitólio.',
+    cnpj: 'CNPJ: 38.765.214/0001-52',
+    address: 'Rua Coronel Diogo, 245 – Centro, Mococa/SP',
+  },
+  support: [
+    { name: 'contato@favamimoveis.com.br', href: 'mailto:contato@favamimoveis.com.br' },
+    { name: '(19) 99999‑5555', href: 'tel:+5519999995555' },
+    { name: 'WhatsApp Business', href: 'https://wa.me/5519999995555' },
+  ],
+  legal: [
+    { name: 'Política de Privacidade', href: '/politica-de-privacidade' },
+    { name: 'Termos de Uso', href: '/termos-de-uso' },
+  ],
+  enterprise: [
+    { name: 'Sobre a Favam', href: '/sobre' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Contato', href: '/contato' },
+  ],
 };
