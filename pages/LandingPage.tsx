@@ -1,16 +1,19 @@
 import React, { useState, useRef } from 'react';
-import type { Product, Testimonial } from '../types';
-import { PRODUCTS, TESTIMONIALS, FAQ_DATA } from '../constants';
+import type { Product, Testimonial } from '../types'; // Keeping types import for compatibility
+// We will override constants with specific Real Estate data inside components for this refactor
 import { CheckCircleIcon, ZapIcon, ShieldIcon, ChevronDownIcon, UsersIcon, TargetIcon, HeartIcon } from '../components/icons';
 
 // --- SHARED COMPONENTS ---
 
-// InlineCheckoutForm Component
-interface InlineCheckoutFormProps {
-    productName: string;
+// LeadCaptureForm Component (Refactored from InlineCheckoutForm)
+// Foco: Pré-qualificação e Captação de Leads (AIDA: Ação)
+interface LeadCaptureFormProps {
+    ctaLabel: string;
+    placeholder?: string;
 }
-const InlineCheckoutForm: React.FC<InlineCheckoutFormProps> = ({ productName }) => {
-    const [email, setEmail] = useState('');
+
+const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ ctaLabel, placeholder = "Seu melhor e-mail ou WhatsApp" }) => {
+    const [contact, setContact] = useState('');
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [message, setMessage] = useState('');
 
@@ -19,40 +22,40 @@ const InlineCheckoutForm: React.FC<InlineCheckoutFormProps> = ({ productName }) 
         setStatus('loading');
         setMessage('');
 
-        // Simulate API call for lead generation
+        // Simulação de envio para CRM (Kenlo/Vista) ou API
         await new Promise(resolve => setTimeout(resolve, 1500));
 
-        if (email && email.includes('@')) {
+        if (contact && contact.length > 5) {
             setStatus('success');
-            setMessage(`Obrigado! Em breve entraremos em contato para finalizar sua compra do ${productName}.`);
+            setMessage(`Recebemos seu contato! Um consultor especialista iniciará sua pré-qualificação em instantes.`);
         } else {
             setStatus('error');
-            setMessage('Por favor, insira um email válido.');
+            setMessage('Por favor, insira um contato válido.');
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="mt-6">
+        <form onSubmit={handleSubmit} className="mt-6 w-full max-w-lg">
             <div className="flex flex-col sm:flex-row gap-2">
                 <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Seu melhor email"
+                    type="text"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                    placeholder={placeholder}
                     required
-                    className="flex-grow px-4 py-3 rounded-md bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 focus:ring-2 focus:ring-primary focus:outline-none transition-shadow"
+                    className="flex-grow px-4 py-3 rounded-md bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 focus:ring-2 focus:ring-primary focus:outline-none transition-shadow text-neutral-900 dark:text-white"
                     disabled={status === 'loading'}
                 />
                 <button
                     type="submit"
-                    className="bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary disabled:bg-opacity-50 disabled:cursor-not-allowed"
+                    className="bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary disabled:bg-opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                     disabled={status === 'loading'}
                 >
-                    {status === 'loading' ? 'Enviando...' : 'Comprar Agora'}
+                    {status === 'loading' ? 'Processando...' : ctaLabel}
                 </button>
             </div>
             {message && (
-                <p className={`mt-3 text-sm ${status === 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                <p className={`mt-3 text-sm font-medium ${status === 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                     {message}
                 </p>
             )}
@@ -60,34 +63,48 @@ const InlineCheckoutForm: React.FC<InlineCheckoutFormProps> = ({ productName }) 
     );
 };
 
-// --- BLOCK 1: CAPTURA E PROPOSTA DE VALOR ---
+// --- AIDA STAGE 1: ATENÇÃO (Hero Section) ---
 
 const HeroSection: React.FC = () => (
-    <section id="hero" className="py-20 md:py-32">
+    <section id="hero" className="py-20 md:py-32 bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-900 dark:to-neutral-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-12 items-center">
-                <div className="text-center max-w-3xl">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
-                        A Solução <span className="text-primary dark:text-primary-light">Definitiva</span> para o Seu Negócio
-                    </h1>
-                    <p className="mt-4 text-lg md:text-xl text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto">
-                        Aumente sua produtividade, otimize processos e alcance resultados incríveis com nossa plataforma inovadora.
-                    </p>
-                    <div className="max-w-xl mx-auto">
-                        <InlineCheckoutForm productName="Produto Principal" />
+                <div className="text-center max-w-4xl">
+                    <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-primary/10 text-primary dark:text-primary-light font-semibold text-sm tracking-wide">
+                        Estratégia Imobiliária 80/20
                     </div>
-                    <p className="mt-3 text-xs text-neutral-500">Teste por 7 dias grátis. Cancele quando quiser.</p>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-tight">
+                        Invista nos <span className="text-primary dark:text-primary-light">4% dos Imóveis</span> que Geram Resultados Reais
+                    </h1>
+                    <p className="mt-6 text-lg md:text-xl text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto">
+                        Inteligência de mercado para Mococa, Ribeirão Preto, Caconde e Capitólio. Unimos atendimento humanizado e dados para encontrar a oportunidade perfeita para moradia ou investimento.
+                    </p>
+                    <div className="max-w-xl mx-auto mt-8">
+                        <LeadCaptureForm ctaLabel="Fazer Pré-qualificação" />
+                    </div>
+                    <p className="mt-4 text-xs text-neutral-500 uppercase tracking-widest">
+                        Análise de Crédito Gratuita • Atendimento via WhatsApp • CRM Integrado
+                    </p>
                 </div>
-                <div className="w-full flex justify-center">
-                    <div className="w-full max-w-3xl aspect-video rounded-lg shadow-2xl overflow-hidden">
+                
+                {/* Hero Video / Visual Proof */}
+                <div className="w-full flex justify-center mt-8">
+                    <div className="w-full max-w-4xl aspect-video rounded-xl shadow-2xl overflow-hidden border-4 border-white dark:border-neutral-800 relative">
+                        {/* Placeholder visual representando imóveis premium */}
+                        <div className="absolute inset-0 bg-neutral-800 flex items-center justify-center text-neutral-500">
+                             <span className="text-lg">Vídeo Tour: Casas, Apartamentos e Fazendas Selecionados</span>
+                        </div>
+                        {/* Se houver vídeo real, descomentar o iframe abaixo */}
+                        {/* 
                         <iframe
-                            className="w-full h-full"
-                            src="https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&mute=1&loop=1&playlist=LXb3EKWsInQ&controls=0&showinfo=0&rel=0"
-                            title="Vídeo de demonstração do produto"
+                            className="w-full h-full relative z-10"
+                            src="https://www.youtube.com/embed/PLACEHOLDER?autoplay=1&mute=1&loop=1&playlist=PLACEHOLDER&controls=0"
+                            title="Tour Imobiliário Favam"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         ></iframe>
+                        */}
                     </div>
                 </div>
             </div>
@@ -95,32 +112,52 @@ const HeroSection: React.FC = () => (
     </section>
 );
 
-// --- BLOCK 2: PROBLEMATIZAÇÃO E SOLUÇÃO ---
+// --- AIDA STAGE 2: INTERESSE (Metodologia e Proposta de Valor) ---
 
-const ProblemSolutionSection: React.FC = () => (
-    <section id="problem-solution" className="py-20 bg-neutral-100 dark:bg-neutral-900">
+const MethodologySection: React.FC = () => (
+    <section id="methodology" className="py-20 bg-white dark:bg-neutral-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="bg-white dark:bg-neutral-800/50 p-8 rounded-lg border border-neutral-200 dark:border-neutral-700">
-                    <h2 className="text-3xl font-bold tracking-tight text-red-600 dark:text-red-400">O Problema: Caos e Produtividade Perdida</h2>
-                    <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
-                        Tarefas se acumulam, prazos são perdidos e a comunicação da equipe é fragmentada. Você sente que está sempre "apagando incêndios" em vez de focar no que realmente importa para crescer?
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+                <div className="order-2 md:order-1">
+                    <div className="flex items-center gap-4 mb-6">
+                        <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                            <ShieldIcon className="h-8 w-8 text-red-600 dark:text-red-400" />
+                        </div>
+                        <h2 className="text-3xl font-bold text-neutral-900 dark:text-white">O Mercado Tradicional é <span className="text-red-600 dark:text-red-400">Ineficiente</span></h2>
+                    </div>
+                    <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-6">
+                        Você perde horas visitando imóveis que não perfilam, enfrenta burocracia bancária sem suporte e toma decisões baseadas em emoção, não em números.
                     </p>
-                    <ul className="mt-6 space-y-2 text-neutral-600 dark:text-neutral-400">
-                        <li className="flex items-start"><span className="text-red-500 mr-2 mt-1">❌</span><span>Falta de clareza sobre as prioridades.</span></li>
-                        <li className="flex items-start"><span className="text-red-500 mr-2 mt-1">❌</span><span>Comunicação descentralizada em emails e chats.</span></li>
-                        <li className="flex items-start"><span className="text-red-500 mr-2 mt-1">❌</span><span>Dificuldade em acompanhar o progresso dos projetos.</span></li>
+                    <ul className="space-y-4 text-neutral-600 dark:text-neutral-400">
+                        <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><span>Visitas improdutivas a imóveis fora do perfil.</span></li>
+                        <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><span>Falta de clareza sobre o potencial de valorização.</span></li>
+                        <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><span>Processos de financiamento lentos e opacos.</span></li>
                     </ul>
                 </div>
-                <div className="bg-primary/5 dark:bg-primary/10 p-8 rounded-lg border border-primary/20">
-                    <h2 className="text-3xl font-bold tracking-tight text-primary dark:text-primary-light">A Solução: Clareza e Controle Total</h2>
-                    <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-300">
-                        Nossa plataforma centraliza suas tarefas, projetos e comunicação, transformando o caos em um fluxo de trabalho organizado e eficiente. Tenha uma visão clara do que precisa ser feito e quem está fazendo.
+                
+                <div className="order-1 md:order-2 bg-neutral-50 dark:bg-neutral-800/50 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-lg">
+                    <div className="flex items-center gap-4 mb-6">
+                        <div className="p-3 bg-primary/10 rounded-lg">
+                            <ZapIcon className="h-8 w-8 text-primary dark:text-primary-light" />
+                        </div>
+                        <h2 className="text-3xl font-bold text-neutral-900 dark:text-white">A Abordagem <span className="text-primary dark:text-primary-light">Favam Imóveis</span></h2>
+                    </div>
+                    <p className="text-lg text-neutral-600 dark:text-neutral-300 mb-6">
+                        Utilizamos automação de marketing e análise de dados para filtrar os 80% de ruído e focar nos 20% de oportunidades reais para seu perfil (ICP).
                     </p>
-                     <ul className="mt-6 space-y-2 text-neutral-600 dark:text-neutral-300">
-                        <li className="flex items-start"><span className="text-green-500 mr-2 mt-1">✅</span><span>Priorize tarefas com facilidade.</span></li>
-                        <li className="flex items-start"><span className="text-green-500 mr-2 mt-1">✅</span><span>Centralize a comunicação do seu time.</span></li>
-                        <li className="flex items-start"><span className="text-green-500 mr-2 mt-1">✅</span><span>Acompanhe o progresso em tempo real.</span></li>
+                     <ul className="space-y-4 text-neutral-700 dark:text-neutral-300 font-medium">
+                        <li className="flex items-start">
+                            <CheckCircleIcon className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" />
+                            <span>Pré-qualificação bancária em até 24h.</span>
+                        </li>
+                        <li className="flex items-start">
+                            <CheckCircleIcon className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" />
+                            <span>Curadoria de imóveis com alto potencial de ROI.</span>
+                        </li>
+                        <li className="flex items-start">
+                            <CheckCircleIcon className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" />
+                            <span>Consultoria jurídica e financeira completa.</span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -128,235 +165,233 @@ const ProblemSolutionSection: React.FC = () => (
     </section>
 );
 
-// --- BLOCK 3: QUALIFICAÇÃO E BENEFÍCIOS ---
+// --- AIDA STAGE 3: DESEJO (Segmentação e Prova Social) ---
 
-const TargetAudienceSection: React.FC = () => (
-    <section id="target-audience" className="py-20">
+const MarketSegmentsSection: React.FC = () => (
+    <section id="segments" className="py-20 bg-neutral-100 dark:bg-neutral-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto">
-                <h2 className="text-3xl font-bold tracking-tight">Feito para Times que Buscam a Excelência</h2>
-                <p className="mt-2 text-lg text-neutral-600 dark:text-neutral-400">Se você se encaixa em um destes perfis, esta solução foi desenhada para você.</p>
-            </div>
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="bg-neutral-100 dark:bg-neutral-800/50 p-6 rounded-lg shadow-md text-center">
-                    <UsersIcon className="h-10 w-10 mx-auto text-primary mb-4" />
-                    <h3 className="font-semibold text-lg">Gerentes de Projeto</h3>
-                    <p className="text-sm text-neutral-500 mt-1">Centralize projetos, delegue tarefas e monitore o progresso sem esforço.</p>
-                </div>
-                <div className="bg-neutral-100 dark:bg-neutral-800/50 p-6 rounded-lg shadow-md text-center">
-                    <ZapIcon className="h-10 w-10 mx-auto text-primary mb-4" />
-                    <h3 className="font-semibold text-lg">Startups e PMEs</h3>
-                    <p className="text-sm text-neutral-500 mt-1">Organize suas operações, alinhe sua equipe e acelere o crescimento.</p>
-                </div>
-                <div className="bg-neutral-100 dark:bg-neutral-800/50 p-6 rounded-lg shadow-md text-center">
-                    <TargetIcon className="h-10 w-10 mx-auto text-primary mb-4" />
-                    <h3 className="font-semibold text-lg">Agências de Marketing</h3>
-                    <p className="text-sm text-neutral-500 mt-1">Gerencie múltiplos clientes e campanhas em um só lugar, com total visibilidade.</p>
-                </div>
-                <div className="bg-neutral-100 dark:bg-neutral-800/50 p-6 rounded-lg shadow-md text-center">
-                     <HeartIcon className="h-10 w-10 mx-auto text-primary mb-4" />
-                    <h3 className="font-semibold text-lg">Freelancers e Autônomos</h3>
-                    <p className="text-sm text-neutral-500 mt-1">Organize seus projetos, controle seus prazos e impressione seus clientes.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-);
-
-const BenefitsSection: React.FC = () => {
-    const benefits = [
-        {
-            icon: <ZapIcon className="h-8 w-8 text-primary" />,
-            title: 'Performance Rápida',
-            description: 'Nossa infraestrutura otimizada garante velocidade e responsividade incomparáveis.'
-        },
-        {
-            icon: <ShieldIcon className="h-8 w-8 text-primary" />,
-            title: 'Segurança de Ponta',
-            description: 'Seus dados estão protegidos com as mais modernas tecnologias de segurança.'
-        },
-        {
-            icon: <CheckCircleIcon className="h-8 w-8 text-primary" />,
-            title: 'Fácil de Usar',
-            description: 'Interface intuitiva e amigável que não requer curva de aprendizado.'
-        }
-    ];
-    return (
-        <section id="benefits" className="py-20 bg-neutral-200 dark:bg-neutral-800">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid md:grid-cols-3 gap-12">
-                     {benefits.map(benefit => (
-                         <div key={benefit.title} className="flex items-start">
-                             <div className="flex-shrink-0 bg-primary/10 p-3 rounded-full">{benefit.icon}</div>
-                             <div className="ml-4">
-                                 <h3 className="text-lg font-semibold">{benefit.title}</h3>
-                                 <p className="mt-1 text-neutral-600 dark:text-neutral-400">{benefit.description}</p>
-                             </div>
-                         </div>
-                     ))}
-                </div>
-            </div>
-        </section>
-    );
-};
-
-// --- BLOCK 4: PROVA SOCIAL E AUTORIDADE ---
-
-const TestimonialsSection: React.FC = () => {
-    const scrollContainer = useRef<HTMLDivElement>(null);
-    return (
-        <section id="testimonials" className="py-20 overflow-hidden">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center">
-                    <h2 className="text-3xl font-bold tracking-tight">O que nossos clientes dizem</h2>
-                    <p className="mt-2 text-lg text-neutral-600 dark:text-neutral-400">Confiança construída com resultados.</p>
-                </div>
-                <div ref={scrollContainer} className="mt-12 flex space-x-8 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
-                    {TESTIMONIALS.map((testimonial, index) => (
-                        <div key={index} className="snap-center flex-shrink-0 w-80 md:w-96 bg-neutral-100 dark:bg-neutral-800 p-6 rounded-lg shadow-lg border border-neutral-200 dark:border-neutral-700">
-                            <p className="text-neutral-600 dark:text-neutral-300 italic">"{testimonial.quote}"</p>
-                            <div className="flex items-center mt-4">
-                                <img src={testimonial.avatarUrl} alt={testimonial.author} className="h-12 w-12 rounded-full object-cover" />
-                                <div className="ml-4">
-                                    <p className="font-semibold">{testimonial.author}</p>
-                                    <p className="text-sm text-neutral-500">{testimonial.role}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-};
-
-const AuthoritySection: React.FC = () => (
-    <section id="authority" className="py-16 bg-neutral-100 dark:bg-neutral-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 className="text-center text-lg font-semibold text-neutral-600 dark:text-neutral-400 uppercase tracking-widest">Confiado por grandes empresas</h3>
-            <div className="mt-8 flex justify-center items-center gap-x-8 sm:gap-x-12 flex-wrap">
-                <div className="text-2xl font-bold text-neutral-400 dark:text-neutral-500 my-2">EMPRESA A</div>
-                <div className="text-2xl font-bold text-neutral-400 dark:text-neutral-500 my-2">LOGO B</div>
-                <div className="text-2xl font-bold text-neutral-400 dark:text-neutral-500 my-2">MARCA C</div>
-                <div className="text-2xl font-bold text-neutral-400 dark:text-neutral-500 my-2">CLIENTE D</div>
-                <div className="text-2xl font-bold text-neutral-400 dark:text-neutral-500 my-2">PARCEIRO E</div>
-            </div>
-        </div>
-    </section>
-);
-
-const FounderStorySection: React.FC = () => (
-    <section id="founder-story" className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-3 gap-12 items-center max-w-5xl mx-auto">
-                <div className="md:col-span-1">
-                     <img src="https://picsum.photos/id/1005/400/400" alt="Fundador da Empresa" className="rounded-full shadow-lg aspect-square object-cover mx-auto" />
-                </div>
-                <div className="md:col-span-2">
-                    <h2 className="text-3xl font-bold tracking-tight">Uma Solução Nascida de uma Necessidade Real</h2>
-                    <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-300">
-                        "Eu era gerente de projetos e sentia na pele a frustração de usar múltiplas ferramentas que não se conversavam. Perdia horas tentando organizar o que era prioridade. Criei o ProdutoX para ser a plataforma que eu sempre quis ter: simples, integrada e focada em resultados."
-                    </p>
-                    <p className="mt-4 font-semibold text-neutral-800 dark:text-neutral-100">João da Silva, Fundador e CEO</p>
-                </div>
-            </div>
-        </div>
-    </section>
-);
-
-// --- BLOCK 5: A OFERTA DETALHADA ---
-
-const HowItWorksSection: React.FC = () => {
-    const steps = [
-        { number: '01', title: 'Cadastro Rápido', description: 'Crie sua conta em menos de 60 segundos, sem complicações ou burocracia.' },
-        { number: '02', title: 'Configure sua Plataforma', description: 'Personalize a ferramenta de acordo com as necessidades específicas do seu negócio.' },
-        { number: '03', title: 'Comece a Crescer', description: 'Utilize nossos recursos para otimizar seu trabalho e ver resultados imediatos.' }
-    ];
-
-    return (
-        <section id="how-it-works" className="py-20 bg-neutral-200 dark:bg-neutral-800">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center">
-                    <h2 className="text-3xl font-bold tracking-tight">Como Funciona</h2>
-                    <p className="mt-2 text-lg text-neutral-600 dark:text-neutral-400">Três passos simples para o sucesso.</p>
-                </div>
-                <div className="mt-12 grid md:grid-cols-3 gap-8">
-                    {steps.map(step => (
-                        <div key={step.number} className="text-center p-6 bg-neutral-100 dark:bg-neutral-900 rounded-lg shadow-md">
-                           <div className="text-5xl font-extrabold text-primary dark:text-primary-light mb-4">{step.number}</div>
-                           <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                           <p className="text-neutral-600 dark:text-neutral-400">{step.description}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
-};
-
-const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
-    <div className={`border rounded-lg p-6 flex flex-col ${product.isFeatured ? 'border-primary dark:border-primary-light ring-2 ring-primary dark:ring-primary-light' : 'border-neutral-300 dark:border-neutral-700'}`}>
-        {product.isFeatured && <div className="text-center mb-4"><span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">MAIS POPULAR</span></div>}
-        <h3 className="text-2xl font-bold text-center">{product.name}</h3>
-        <p className="text-4xl font-extrabold text-center my-4">{product.price}</p>
-        <ul className="space-y-2 mb-6 text-neutral-600 dark:text-neutral-400">
-            {product.features.map(feature => (
-                <li key={feature} className="flex items-center">
-                    <CheckCircleIcon className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
-                    <span>{feature}</span>
-                </li>
-            ))}
-        </ul>
-        <button className={`mt-auto w-full font-bold py-3 px-6 rounded-md transition-transform transform hover:scale-105 ${product.isFeatured ? 'bg-primary hover:bg-primary-dark text-white' : 'bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600'}`}>
-            Comprar Agora
-        </button>
-    </div>
-);
-
-const InvestmentSection: React.FC = () => (
-    <section id="investment" className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-                <h2 className="text-3xl font-bold tracking-tight">Um Investimento Inteligente no Seu Crescimento</h2>
-                <p className="mt-2 text-lg text-neutral-600 dark:text-neutral-400">Escolha o plano perfeito para você. Sem taxas escondidas.</p>
-            </div>
-            <div className="mt-12 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                {PRODUCTS.map(product => <ProductCard key={product.id} product={product} />)}
-            </div>
-        </div>
-    </section>
-);
-
-
-// --- BLOCK 6: FECHAMENTO E REVERSÃO DE RISCO ---
-
-const GuaranteeSection: React.FC = () => (
-     <section id="guarantee" className="py-20 bg-neutral-100 dark:bg-neutral-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto bg-white dark:bg-neutral-800 border-2 border-dashed border-primary dark:border-primary-light rounded-lg p-8 text-center">
-                <ShieldIcon className="h-16 w-16 mx-auto text-primary mb-4" />
-                <h2 className="text-3xl font-bold tracking-tight">Sua Satisfação ou Seu Dinheiro de Volta</h2>
-                <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-300">
-                    Temos tanta confiança na nossa plataforma que oferecemos uma garantia incondicional de 7 dias. Se por qualquer motivo você não ficar 100% satisfeito, basta nos avisar e nós reembolsaremos seu investimento integralmente. Sem perguntas, sem burocracia. O risco é todo nosso.
+            <div className="text-center max-w-3xl mx-auto mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">Oportunidades Mapeadas por Região</h2>
+                <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
+                    Entendemos a dinâmica de cada mercado para maximizar seu patrimônio e qualidade de vida.
                 </p>
             </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Mococa */}
+                <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-md border-t-4 border-primary hover:shadow-xl transition-shadow">
+                    <UsersIcon className="h-12 w-12 text-primary mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Mococa</h3>
+                    <p className="text-sm font-semibold text-primary mb-3 uppercase">Primeira Moradia</p>
+                    <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-4">
+                        Saia do aluguel com parcelas menores que a locação. Foco em urgência e facilidade de aprovação no Minha Casa Minha Vida.
+                    </p>
+                    <a href="#" className="text-primary font-bold text-sm hover:underline">Ver imóveis em Mococa &rarr;</a>
+                </div>
+
+                {/* Ribeirão Preto */}
+                <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-md border-t-4 border-secondary hover:shadow-xl transition-shadow">
+                    <TargetIcon className="h-12 w-12 text-secondary mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Ribeirão Preto</h3>
+                    <p className="text-sm font-semibold text-secondary mb-3 uppercase">Arbitragem & Custo</p>
+                    <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-4">
+                        More melhor pagando menos. Estratégias de arbitragem imobiliária para quem busca qualidade de vida e economia inteligente.
+                    </p>
+                    <a href="#" className="text-secondary font-bold text-sm hover:underline">Calcular economia em RP &rarr;</a>
+                </div>
+
+                {/* Caconde */}
+                <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-md border-t-4 border-green-600 hover:shadow-xl transition-shadow">
+                    <ZapIcon className="h-12 w-12 text-green-600 mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Caconde</h3>
+                    <p className="text-sm font-semibold text-green-600 mb-3 uppercase">Investidor Agro</p>
+                    <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-4">
+                        Oportunidades rurais e urbanas para investidores. ROI estimado de 8% a 12% ao ano com segurança patrimonial.
+                    </p>
+                    <a href="#" className="text-green-600 font-bold text-sm hover:underline">Baixar relatório Agro &rarr;</a>
+                </div>
+
+                {/* Capitólio */}
+                <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-md border-t-4 border-amber-500 hover:shadow-xl transition-shadow">
+                    <HeartIcon className="h-12 w-12 text-amber-500 mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Capitólio</h3>
+                    <p className="text-sm font-semibold text-amber-500 mb-3 uppercase">Lazer Premium</p>
+                    <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-4">
+                        Seu refúgio no Mar de Minas. Imóveis de alto padrão para lazer ou renda via temporada (Airbnb/Booking).
+                    </p>
+                    <a href="#" className="text-amber-500 font-bold text-sm hover:underline">Agendar tour VIP &rarr;</a>
+                </div>
+            </div>
         </div>
     </section>
 );
 
-const CTASection: React.FC = () => (
-    <section id="cta" className="py-20 bg-primary">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-extrabold text-white">Pronto para Transformar Seu Negócio?</h2>
-            <p className="mt-2 text-lg text-cyan-100 max-w-2xl mx-auto">Junte-se a milhares de empresas que já estão crescendo com a nossa plataforma. Comece seu teste gratuito hoje mesmo.</p>
-            <a href="#hero" className="mt-8 inline-block bg-white text-primary font-bold py-3 px-8 rounded-md transition-transform transform hover:scale-105 shadow-lg">
-                Começar Agora
-            </a>
+const FinancialImpactSection: React.FC = () => (
+    <section className="py-20 bg-neutral-900 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 className="text-3xl font-bold mb-6">Números que Constroem Patrimônio</h2>
+                    <p className="text-neutral-300 text-lg mb-8">
+                        Não vendemos apenas metros quadrados. Vendemos inteligência financeira aplicada ao mercado imobiliário. Veja o impacto da nossa consultoria 80/20.
+                    </p>
+                    <div className="grid grid-cols-2 gap-6">
+                        <div className="p-4 bg-neutral-800 rounded-lg">
+                            <div className="text-3xl font-bold text-primary-light mb-1">90 Dias</div>
+                            <div className="text-sm text-neutral-400">Roadmap médio até as chaves</div>
+                        </div>
+                        <div className="p-4 bg-neutral-800 rounded-lg">
+                            <div className="text-3xl font-bold text-green-400 mb-1">+12%</div>
+                            <div className="text-sm text-neutral-400">ROI médio em Caconde (a.a.)</div>
+                        </div>
+                        <div className="p-4 bg-neutral-800 rounded-lg">
+                            <div className="text-3xl font-bold text-amber-400 mb-1">4%</div>
+                            <div className="text-sm text-neutral-400">Foco nos imóveis "Best-in-Class"</div>
+                        </div>
+                        <div className="p-4 bg-neutral-800 rounded-lg">
+                            <div className="text-3xl font-bold text-white mb-1">100%</div>
+                            <div className="text-sm text-neutral-400">Processo digital e transparente</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-neutral-800 p-8 rounded-xl border border-neutral-700">
+                    <h3 className="text-xl font-bold mb-6 text-center">Simulação de Economia (Exemplo: Mococa)</h3>
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center border-b border-neutral-700 pb-2">
+                            <span className="text-neutral-400">Aluguel Médio (5 anos)</span>
+                            <span className="text-red-400 font-mono">- R$ 72.000</span>
+                        </div>
+                        <div className="flex justify-between items-center border-b border-neutral-700 pb-2">
+                            <span className="text-neutral-400">Prestação Financiamento</span>
+                            <span className="text-yellow-400 font-mono">R$ 68.000</span>
+                        </div>
+                        <div className="flex justify-between items-center border-b border-neutral-700 pb-2">
+                            <span className="text-neutral-400">Valorização do Imóvel</span>
+                            <span className="text-green-400 font-mono">+ R$ 45.000</span>
+                        </div>
+                        <div className="flex justify-between items-center pt-4">
+                            <span className="font-bold text-lg">Ganho Patrimonial Real</span>
+                            <span className="font-bold text-2xl text-primary-light">+ R$ 49.000</span>
+                        </div>
+                    </div>
+                    <div className="mt-8">
+                        <button className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded transition-colors">
+                            Quero minha simulação personalizada
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+);
+
+const SocialProofSection: React.FC = () => (
+    <section id="testimonials" className="py-20 bg-white dark:bg-neutral-950">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-center mb-12 text-neutral-900 dark:text-white">Quem Confiou na Estratégia</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+                {[
+                    {
+                        quote: "A equipe focou exatamente no que eu precisava. Em 2 visitas em Ribeirão, fechamos negócio. A economia de tempo foi surreal.",
+                        author: "Ricardo M.",
+                        role: "Investidor - Ribeirão Preto"
+                    },
+                    {
+                        quote: "Achava que não conseguiria financiar minha casa em Mococa. A pré-qualificação deles me mostrou o caminho e hoje tenho a chave na mão.",
+                        author: "Ana Clara S.",
+                        role: "Primeira Moradia - Mococa"
+                    },
+                    {
+                        quote: "Comprei um sítio em Caconde como investimento. O relatório de ROI que me apresentaram foi decisivo e preciso.",
+                        author: "Dr. Fernando P.",
+                        role: "Investidor Agro - Caconde"
+                    }
+                ].map((testimonial, idx) => (
+                    <div key={idx} className="bg-neutral-50 dark:bg-neutral-900 p-6 rounded-xl shadow-sm border border-neutral-100 dark:border-neutral-800">
+                        <div className="flex text-primary mb-4">
+                            {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
+                        </div>
+                        <p className="text-neutral-600 dark:text-neutral-300 italic mb-4">"{testimonial.quote}"</p>
+                        <div>
+                            <p className="font-bold text-neutral-900 dark:text-white">{testimonial.author}</p>
+                            <p className="text-xs text-neutral-500 uppercase">{testimonial.role}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+);
+
+// --- AIDA STAGE 4: AÇÃO (Passos e CTAs Finais) ---
+
+const RoadmapSection: React.FC = () => {
+    const steps = [
+        { number: '01', title: 'Pré-Qualificação', description: 'Preencha o formulário e descubra seu poder de compra em 24h via WhatsApp.' },
+        { number: '02', title: 'Curadoria 80/20', description: 'Selecionamos apenas os imóveis que encaixam no seu perfil e orçamento.' },
+        { number: '03', title: 'Tour & Decisão', description: 'Visitas presenciais ou virtuais focadas, seguidas de assessoria jurídica completa.' }
+    ];
+
+    return (
+        <section id="roadmap" className="py-20 bg-neutral-100 dark:bg-neutral-900">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white">Seu Caminho até a Chave na Mão</h2>
+                    <p className="mt-2 text-lg text-neutral-600 dark:text-neutral-400">Processo simplificado, transparente e seguro.</p>
+                </div>
+                <div className="grid md:grid-cols-3 gap-8">
+                    {steps.map(step => (
+                        <div key={step.number} className="relative p-8 bg-white dark:bg-neutral-800 rounded-xl shadow-md overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                           <div className="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-primary">{step.number}</div>
+                           <div className="text-2xl font-bold text-primary dark:text-primary-light mb-4">{step.title}</div>
+                           <p className="text-neutral-600 dark:text-neutral-300 relative z-10">{step.description}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+const FinalActionSection: React.FC = () => (
+    <section id="cta" className="py-24 bg-primary relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary-dark to-primary opacity-90 z-0"></div>
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6">Não Deixe a Oportunidade Passar</h2>
+            <p className="text-xl text-cyan-100 max-w-3xl mx-auto mb-10">
+                O mercado imobiliário é dinâmico. Os melhores imóveis (os 4% do topo) são vendidos rapidamente. 
+                Garanta sua consultoria gratuita hoje mesmo.
+            </p>
+            
+            <div className="flex flex-col md:flex-row justify-center items-center gap-6">
+                <button className="bg-white text-primary font-bold py-4 px-10 rounded-lg shadow-xl hover:bg-neutral-100 transition-transform transform hover:scale-105 flex items-center">
+                    <ZapIcon className="h-5 w-5 mr-2" />
+                    Falar no WhatsApp Agora
+                </button>
+                <button className="bg-transparent border-2 border-white text-white font-bold py-4 px-10 rounded-lg hover:bg-white/10 transition-colors flex items-center">
+                    <CheckCircleIcon className="h-5 w-5 mr-2" />
+                    Agendar Tour Guiado
+                </button>
+            </div>
+            
+            <p className="mt-8 text-sm text-cyan-200 opacity-80">
+                Atendimento imediato para Mococa, Ribeirão Preto, Caconde e Capitólio.
+            </p>
         </div>
     </section>
 );
 
 const FAQSection: React.FC = () => {
+    // FAQ Data Inlined for context
+    const FAQs = [
+        { question: "Como funciona a pré-qualificação?", answer: "Analisamos seu perfil financeiro junto aos principais bancos para definir seu potencial de compra antes mesmo de escolher o imóvel." },
+        { question: "Vocês cobram pela consultoria?", answer: "Não. Nossa remuneração vem do sucesso da transação imobiliária. A consultoria inicial e curadoria são gratuitas." },
+        { question: "Atendem investidores de fora da região?", answer: "Sim. Temos processos digitais completos, incluindo tours virtuais e assinatura de contrato digital, ideais para investidores de Capitólio e Caconde." },
+        { question: "Qual o ROI médio em Caconde?", answer: "Historicamente, observamos retornos entre 8% a 12% ao ano, combinando valorização da terra e produção agro." }
+    ];
+
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     const toggleFAQ = (index: number) => {
@@ -364,20 +399,18 @@ const FAQSection: React.FC = () => {
     };
 
     return (
-        <section id="faq" className="py-20">
+        <section id="faq" className="py-20 bg-neutral-50 dark:bg-neutral-900">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight">Ainda tem Dúvidas?</h2>
-                     <p className="mt-2 text-lg text-neutral-600 dark:text-neutral-400">Respostas para as perguntas mais comuns.</p>
+                    <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white">Dúvidas Frequentes</h2>
                 </div>
                 <div className="space-y-4">
-                    {FAQ_DATA.map((item, index) => (
-                        <div key={index} className="bg-neutral-100 dark:bg-neutral-800/50 rounded-lg shadow-sm">
+                    {FAQs.map((item, index) => (
+                        <div key={index} className="bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700">
                             <button
                                 onClick={() => toggleFAQ(index)}
-                                className="w-full flex justify-between items-center p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
+                                className="w-full flex justify-between items-center p-5 text-left focus:outline-none focus:ring-2 focus:ring-primary rounded-lg"
                                 aria-expanded={openIndex === index}
-                                aria-controls={`faq-answer-${index}`}
                             >
                                 <span className="text-md font-medium text-neutral-800 dark:text-neutral-100">{item.question}</span>
                                 <ChevronDownIcon
@@ -385,11 +418,10 @@ const FAQSection: React.FC = () => {
                                 />
                             </button>
                             <div
-                                id={`faq-answer-${index}`}
-                                className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-96' : 'max-h-0'}`}
+                                className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === index ? 'max-h-48' : 'max-h-0'}`}
                             >
-                                <div className="px-5 pb-5">
-                                    <p className="text-neutral-600 dark:text-neutral-300">{item.answer}</p>
+                                <div className="px-5 pb-5 pt-0">
+                                    <p className="text-neutral-600 dark:text-neutral-300 text-sm">{item.answer}</p>
                                 </div>
                             </div>
                         </div>
@@ -402,34 +434,41 @@ const FAQSection: React.FC = () => {
 
 // --- FINAL PAGE COMPONENT ---
 
-const LandingPage: React.FC = () => {
+const RealEstateLandingPage: React.FC = () => {
   return (
-    <>
-      {/* Bloco 1: Captura e Proposta de Valor */}
+    <div className="font-sans antialiased text-neutral-900 bg-white dark:bg-neutral-950">
+      {/* 
+        AIDA STRUCTURE:
+        1. Attention: Hero with Strong Promise & Segmentation
+        2. Interest: Methodology 80/20 & Pain Points
+        3. Desire: Specific Markets, Financial Data, Social Proof
+        4. Action: Roadmap & Final CTAs
+      */}
+      
       <HeroSection />
       
-      {/* Bloco 2: Problematização e Solução */}
-      <ProblemSolutionSection />
+      <MethodologySection />
       
-      {/* Bloco 3: Qualificação e Benefícios */}
-      <TargetAudienceSection />
-      <BenefitsSection />
+      <MarketSegmentsSection />
       
-      {/* Bloco 4: Prova Social e Autoridade */}
-      <TestimonialsSection />
-      <AuthoritySection />
-      <FounderStorySection />
+      <FinancialImpactSection />
       
-      {/* Bloco 5: A Oferta Detalhada */}
-      <HowItWorksSection />
-      <InvestmentSection />
+      <SocialProofSection />
       
-      {/* Bloco 6: Fechamento e Reversão de Risco */}
-      <GuaranteeSection />
-      <CTASection />
+      <RoadmapSection />
+      
+      <FinalActionSection />
+      
       <FAQSection />
-    </>
+      
+      <footer className="bg-neutral-900 text-neutral-400 py-12 text-center text-sm border-t border-neutral-800">
+        <div className="container mx-auto px-4">
+            <p>&copy; {new Date().getFullYear()} Favam Imóveis. Todos os direitos reservados.</p>
+            <p className="mt-2">CRECI J-XXXXX • Mococa • Ribeirão Preto • Caconde • Capitólio</p>
+        </div>
+      </footer>
+    </div>
   );
 };
 
-export default LandingPage;
+export default RealEstateLandingPage;
