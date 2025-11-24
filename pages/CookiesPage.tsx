@@ -29,20 +29,57 @@ const CookiesPage: React.FC = () => {
     return (
         <>
             <LegalPageLayout title="Política de Cookies" lastUpdated="1 de Janeiro de 2024">
-                <h2>1. O que são cookies?</h2>
-                <p>Cookies são pequenos arquivos de texto que são armazenados em seu computador ou dispositivo móvel quando você visita um site...</p>
-                
-                <h2>2. Como usamos os cookies?</h2>
-                <p>Usamos cookies para entender como você usa nosso site e para melhorar sua experiência. Isso inclui a personalização de conteúdo e publicidade...</p>
+                <h2>1. O que são Cookies?</h2>
+                <p>
+                    Cookies são pequenos arquivos de texto armazenados no seu dispositivo (computador, tablet ou smartphone)
+                    quando você visita um site. Eles ajudam o site a reconhecer seu dispositivo e lembrar de informações sobre
+                    sua visita, como preferências de idioma, região e dados de navegação.
+                </p>
 
-                <h2>3. Tipos de Cookies que Usamos</h2>
+                <h2>2. Por que usamos Cookies?</h2>
+                <p>
+                    A Favam Imóveis utiliza cookies para oferecer uma melhor experiência de navegação e personalização de conteúdo.
+                    Esses cookies permitem entender melhor o comportamento dos visitantes e otimizar os serviços oferecidos,
+                    como formulários de contato, suporte via WhatsApp e campanhas digitais.
+                </p>
+
+                <h2>3. Tipos de Cookies que Utilizamos</h2>
                 <ul>
-                    <li><strong>Cookies Essenciais:</strong> Necessários para o funcionamento do site.</li>
-                    <li><strong>Cookies de Desempenho:</strong> Coletam informações sobre como os visitantes usam o site.</li>
-                    <li><strong>Cookies de Funcionalidade:</strong> Lembram as escolhas que você faz.</li>
+                    <li><strong>Essenciais:</strong> necessários para o funcionamento básico do site e suas funcionalidades.</li>
+                    <li><strong>De Desempenho:</strong> nos ajudam a entender como os visitantes interagem com o site, analisando estatísticas de acesso.</li>
+                    <li><strong>De Funcionalidade:</strong> armazenam preferências do usuário para oferecer uma experiência mais personalizada.</li>
+                    <li><strong>De Marketing:</strong> usados para oferecer anúncios relevantes e otimizar campanhas em Google Ads e Meta Ads.</li>
                 </ul>
-                
-                <p>... (Conteúdo completo da política de cookies aqui)</p>
+
+                <h2>4. Como Controlar e Gerenciar Cookies</h2>
+                <p>
+                    Você pode gerenciar suas preferências de cookies diretamente nas configurações do seu navegador.
+                    É possível optar por bloquear, restringir ou excluir cookies. No entanto, ao desativar certos tipos de cookies,
+                    algumas partes do site podem não funcionar corretamente.
+                </p>
+
+                <h2>5. Cookies de Terceiros</h2>
+                <p>
+                    Nosso site pode utilizar cookies de parceiros externos, como Google, Meta e plataformas de CRM,
+                    para fins de análise de desempenho e remarketing. Esses cookies estão sujeitos às políticas de privacidade
+                    de seus respectivos provedores.
+                </p>
+
+                <h2>6. Atualizações desta Política</h2>
+                <p>
+                    Podemos atualizar esta Política de Cookies periodicamente para refletir melhorias nos nossos serviços ou alterações legais.
+                    Recomendamos que você consulte esta página regularmente para estar ciente de possíveis modificações.
+                </p>
+
+                <h2>7. Contato</h2>
+                <p>
+                    Em caso de dúvidas sobre esta Política de Cookies ou sobre como utilizamos seus dados, entre em contato
+                    conosco através do e-mail <a href="mailto:contato@favamimoveis.com.br" className="text-primary underline">contato@favamimoveis.com.br</a>.
+                </p>
+
+                <p className="mt-8 font-semibold">
+                    Favam Imóveis © {new Date().getFullYear()} — Todos os direitos reservados.
+                </p>
             </LegalPageLayout>
             <CookieConsentBanner />
         </>
